@@ -10,7 +10,7 @@ const ItemSchema = new Schema({
   number_in_stock: {type: Number, require: true}
 });
 
-BookSchema.virtual('url').get(() => {
+ItemSchema.virtual('url').get(() => {
   return '/item/' + this._id;
 });
 
