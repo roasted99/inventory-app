@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+  </head>
+  <body>
+   <%- include('partials/navbar') %>
+    <div class="container-fluid p-4">
+      <div class="row mb-4">
+        <h1 class="col-xl-10"><%- title %></h1>
+
+        <button class="btn btn-outline-dark col justify-content-end">  
+          <a href="/item/create" class="text-decoration-none">Create new item</a>
+        </button>
+    </div>
+      <div class="d-flex flex-wrap gap-4">
+      <% item_list.forEach(item => { %>
+        <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">
+            <a href='<%- item.url %> ' class="text-decoration-none text-dark"><%- item.name %></a>
+          </h5>
+        </div>
+      </div>
+     <% }) %> 
+    </div>
+    </div> 
+    
+   
+  </body>
+</html>

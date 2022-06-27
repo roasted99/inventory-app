@@ -10,8 +10,8 @@ const ItemSchema = new Schema({
   number_in_stock: {type: Number, require: true}
 });
 
-ItemSchema.virtual('url').get(() => {
+ItemSchema.virtual('url').get(function() {
   return '/item/' + this._id;
 });
 
-module.exports = mongoose.model('Item', ItemSchema)
+module.exports = mongoose.model('Item', ItemSchema);
