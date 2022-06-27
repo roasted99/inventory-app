@@ -1,8 +1,14 @@
 var Category = require('../models/category');
+var Item = require('../models/category');
+var async = require('async')
 
 // Display list of all Category.
-exports.category_list = function(req, res) {
-    res.send('NOT IMPLEMENTED: Category list');
+exports.category_list = function(req, res, next) {
+    Category.find().sort({name:1})
+    .exec(function(err, item_categories) {
+        if (err) { return next(err); }
+        res.render('category_list', { title:'Category List', category_list: item_categories});
+    })
 };
 
 // Display detail page for a specific Category.

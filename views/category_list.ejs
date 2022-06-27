@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+  </head>
+  <body>
+   <%- include('partials/navbar') %>
+    <div class="container-fluid p-4">
+      <h1><%- title %> </h1>
+      <ul>
+        <% category_list.forEach(category => { %>
+          <li>
+            <a href="<%- category.url %>"><%- category.name %> </a>
+          </li>
+        <%  }); %> 
+      </ul>
+    </div> 
+    
+   
+  </body>
+</html>
