@@ -9,20 +9,21 @@
   <body>
    <%- include('partials/navbar') %>
     <div class="container-fluid p-4">
-      <div class="row mb-4">
-        <h1 class="col-xl-10"><%- title %></h1>
+      
+      <h1><%- title %></h1>
+      <h2>"<%- category.name %>" </h2>
+      <div class="d-flex flex-wrap gap-4">
+        <% category_items.forEach(item => { %>
+          <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">
+              <a href='<%- item.url %> ' class="text-decoration-none text-dark"><%- item.name %></a>
+            </h5>
+          </div>
+        </div>
+       <% }) %> 
+      </div>
 
-        <button class="btn btn-outline-dark col justify-content-end">  
-          <a href="/category/create" class="text-decoration-none">Create new category</a>
-        </button>
-    </div>
-      <ul>
-        <% category_list.forEach(category => { %>
-          <li>
-            <a href="<%- category.url %>"><%- category.name %> </a>
-          </li>
-        <%  }); %> 
-      </ul>
     </div> 
     
    
