@@ -1,7 +1,10 @@
-var Item = require('../models item');
+var Item = require('../models/item');
 
-exports.index = function(req, res) {
-    res.send('NOT IMPLEMENTED: Site Home Page');
+exports.index = function(req, res, next) {
+    Item.find({}).sort({name: 1}).exec((err, list_items) => {
+        if (err) { return next(err); }
+        res.render('index', {title: 'Item list', item_list: list_items})
+    });
 };
 
 // Display list of all items.
