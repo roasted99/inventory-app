@@ -3,6 +3,8 @@ var Category = require('../models/category');
 
 var async = require('async');
 const { body, validationResult } = require('express-validator');
+const fs = require('fs');
+
 
 exports.index = function(req, res, next) {
     async.parallel({
@@ -26,7 +28,7 @@ exports.item_list = function(req, res, next) {
 };
 
 // Display detail page for a specific item.
-exports.item_detail = function(req, res,next) {
+exports.item_detail = function(req, res, next) {
     Item.findById(req.params.id)
     .populate('category')
     .exec(function (err, item) {
@@ -65,6 +67,17 @@ exports.item_create_post = [
             price: req.body.price,
             number_in_stock: req.body.number_in_stock
         });
+
+        if (req.file && errors.isEmpty()) {
+            item.item_img = req.file.item_img;
+            fs.unlink(`public/uploads/${req.body.item_img}`, err => {
+                if(err) console.log(err)
+                console.log(req.body.item_img, "was deleted");
+            });
+        } else if (req.body.item_img && req.body.item_img !== 'null' && req.body.item_img !== 'underfined') {
+            item.item_img = req.body.item_img;
+        }
+
         if (!errors.isEmpty()) {
             Category.find({}).exec(function(err, categories) {
                 if (err) { return next(err); }
