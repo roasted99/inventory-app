@@ -2,6 +2,7 @@ var Item = require('../models/item');
 var Category = require('../models/category');
 
 var async = require('async');
+const { body, validationResult } = require('express-validator');
 
 exports.index = function(req, res, next) {
     async.parallel({
@@ -41,13 +42,44 @@ exports.item_detail = function(req, res,next) {
 
 // Display item create form on GET.
 exports.item_create_get = function(req, res) {
-    res.send('NOT IMPLEMENTED: item create GET');
+   Category.find({}).exec(function(err, categories) {
+        if (err) { return next(err); }
+        res.render('item_form', { title: 'Create Item', categories: categories, errors: null, item: undefined });
+    });
 };
 
 // Handle item create on POST.
-exports.item_create_post = function(req, res) {
-    res.send('NOT IMPLEMENTED: item create POST');
-};
+exports.item_create_post = [
+    body('name', 'Name must not be empty.').trim().isLength({ min: 1 }).escape(),
+    body('description', 'Description must not be empty.').trim().isLength({ min: 1 }).escape(),
+    body('category.*').escape,
+    body('price', 'Price must not be empty.').trim().isLength({ min: 1 }).escape(),
+    body('number_in_stock', 'Number in stock must not be empty.').trim().isLength({ min: 1 }).escape(),
+    (req, res, next) => {
+        const errors = validationResult(req);
+
+        const item = new Item({
+            name: req.body.name,
+            description: req.body.description,
+            category: req.body.category,
+            price: req.body.price,
+            number_in_stock: req.body.number_in_stock
+        });
+        if (!errors.isEmpty()) {
+            Category.find({}).exec(function(err, categories) {
+                if (err) { return next(err); }
+                res.render('item_form', { title: 'Create Item', categories: categories, item: item, errors: errors.array() });
+                return;
+            });
+        }
+        else {
+            item.save(function(err) {
+                if(err) { return next(err); }
+                res.redirect(item.url);
+            });
+        }
+    }
+];
 
 // Display item delete form on GET.
 exports.item_delete_get = function(req, res) {

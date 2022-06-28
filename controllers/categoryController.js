@@ -36,7 +36,7 @@ exports.category_detail = function(req, res, next) {
 
 // Display Category create form on GET.
 exports.category_create_get = function(req, res) {
-    res.render('category_form', { title: 'Create Category', errors: null});
+    res.render('category_form', { title: 'Create Category', errors: null, category: undefined});
 };
 
 // Handle Category create on POST.

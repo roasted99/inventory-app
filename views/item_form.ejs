@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+  </head>
+  <body>
+   <%- include('partials/navbar') %>
+    <div class="container-fluid p-lg-5">
+      
+      <h1><%- title %></h1>
+      <form action="" method="post" class="form-horizontal">
+        <div class="form-group">
+          <label for="name" class="col-sm-2">Name:</label>
+          <div class="col-sm-8">
+           <input type="text" class="form-control" name="name" id="name" placeholder="Name of material" required="true" value="<%- undefined === item ? '' : item.name %> " >
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="description" class="col-sm-2">Description:</label>
+          <div class="col-sm-8">
+            <textarea name="description" class="form-control" id="description" placeholder="Description of the material" required="true" value="<%- undefined === item ? '' : item.description %> " ></textarea>
+          </div>
+          </div>
+
+        <div class="form-group">
+          <label for="category" class="col-sm-2">Category:</label>
+          <div class="col-sm-8">
+          <select name="category" class="form-control" id="category" placeholder="Select category" required="true">
+            <% categories.sort(function(a, b) { let textA = a.name.toUpperCase(); let textB = a.name.toUpperCase(); return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;}); %> 
+            <% categories.forEach(category => { %>
+              <% if (item) { %>
+                <option value="<%- category._id %>" selected="<%- category_id.toString() === item.category._id.toString() ? 'selected' : false %>"><%- category.name %> </option>
+              <% } else { %>
+                <option value="<%- category._id %>"><%- category.name %> </option> 
+                <% } %> 
+           <% }) %> 
+          </select>
+        </div>
+        </div>
+
+        <div class="form-group">
+          <label for="price" class="col-sm-2">Price:</label>
+          <div class="col-sm-8">
+          <input type="text" class="form-control" name="price" id="price" placeholder="Price in USD" required="true" value="<%- undefined === item ? '' : item.price %> " >
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="number_in_stock" class="col-sm-2">Number in stock:</label>
+          <div class="col-sm-8">
+          <input type="text" class="form-control" name="number_in_stock" id="number_in_stock" placeholder="Number in stock" required="'true" value="<%- undefined === item ? '' : item.number_in_stock %> " >
+        </div>
+        </div>
+        <br>
+        <button class="btn btn-outline-primary" type="submit">Submit</button>
+
+      </form>
+
+      <% if (errors) { %>
+        <ul>
+          <% for(err in errors) { %>
+            <li><%- err.msg %> </li>
+          <% } %> 
+        </ul>
+      <% } %> 
+    </div> 
+    
+   
+  </body>
+</html>

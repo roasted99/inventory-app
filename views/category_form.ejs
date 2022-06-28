@@ -8,15 +8,20 @@
   </head>
   <body>
    <%- include('partials/navbar') %>
-    <div class="container-fluid p-4">
+    <div class="container-fluid p-lg-5">
       
       <h1><%- title %></h1>
       <form action="" method="post">
         <div class="form-group">
-          <label for="name">Category:</label>
-          <input type="text" name="name" id="name" placeholder="Flooring, Lighting, ..." >
-          <button class="btn btn-outline-primary" type="submit">Submit</button>
+          <label for="name" class="col-sm-2">Category:</label>
+          <div class="col-sm-8">
+            <input type="text" class="form-control" name="name" id="name" placeholder="Flooring, Lighting, ..." value="<%- undefined === category ? '' : category.name %> " >
+          </div>  
         </div>
+          
+        <br>
+        <button class="btn btn-outline-primary" type="submit">Submit</button>
+      
       </form>
 
       <% if (errors) { %>
