@@ -38,12 +38,12 @@ exports.item_detail = function(req, res, next) {
         err.status = 404;
         return next(err);
     }
-    res.render('item_detail', { title: item.name, item: item});
+    res.render('item_detail', { title: item.name, item: item });
   });
 };
 
 // Display item create form on GET.
-exports.item_create_get = function(req, res) {
+exports.item_create_get = function(req, res, next) {
    Category.find({}).exec(function(err, categories) {
         if (err) { return next(err); }
         res.render('item_form', { title: 'Create Item', categories: categories, errors: null, item: undefined });
@@ -51,13 +51,15 @@ exports.item_create_get = function(req, res) {
 };
 
 // Handle item create on POST.
-exports.item_create_post = [
+exports.item_create_post = 
+[
     body('name', 'Name must not be empty.').trim().isLength({ min: 1 }).escape(),
     body('description', 'Description must not be empty.').trim().isLength({ min: 1 }).escape(),
-    body('category.*').escape,
+    body('category', 'Category must not be empty.').trim().isLength({min: 1}).escape(),
     body('price', 'Price must not be empty.').trim().isLength({ min: 1 }).escape(),
     body('number_in_stock', 'Number in stock must not be empty.').trim().isLength({ min: 1 }).escape(),
     (req, res, next) => {
+        console.log(req.body.name)
         const errors = validationResult(req);
 
         const item = new Item({
@@ -80,7 +82,7 @@ exports.item_create_post = [
 
         if (!errors.isEmpty()) {
             Category.find({}).exec(function(err, categories) {
-                if (err) { return next(err); }
+                if (err) { console.log(err); return next(err); }
                 res.render('item_form', { title: 'Create Item', categories: categories, item: item, errors: errors.array() });
                 return;
             });
@@ -88,6 +90,7 @@ exports.item_create_post = [
         else {
             item.save(function(err) {
                 if(err) { return next(err); }
+                console.log(item)
                 res.redirect(item.url);
             });
         }
@@ -96,12 +99,28 @@ exports.item_create_post = [
 
 // Display item delete form on GET.
 exports.item_delete_get = function(req, res) {
-    res.send('NOT IMPLEMENTED: item delete GET');
+    Item.findById(req.params.id)
+    .populate('category')
+    .exec(function (err, item) {
+    if (err) { return next(err); }
+    if (item == null) {
+       res.redirect('/items');
+    }
+    res.render('item_delete', { title: 'Delete Item', item: item});
+  });
 };
 
 // Handle item delete on POST.
-exports.item_delete_post = function(req, res) {
-    res.send('NOT IMPLEMENTED: item delete POST');
+exports.item_delete_post = function(req, res, next) {
+    Item.findById(req.params.itemid)
+    .populate('category')
+    .exec(function (err, item) {
+    if (err) { return next(err); }
+    Item.findByIdAndRemove(req.body.itemid, function deleteItem(err) {
+        if (err) { return next(err); }
+        res.redirect('/items')
+    })
+  });
 };
 
 // Display item update form on GET.

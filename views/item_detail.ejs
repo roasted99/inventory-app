@@ -9,14 +9,26 @@
   <body>
    <%- include('partials/navbar') %>
     <div class="container-fluid p-4">
+      <div class="content">
+        <h1><%- title %></h1>
+        <% if (item.item_img) { %>
+          <img src="/public/uploads/<%= item.item_img %> " alt="<%- item.name %>" class="img-fluid">
+       <%  } else { %> 
+          <img src="/public/images/noimage.jpg" alt="Image not found" class="img-fluid">
+        <% } %> 
+        <p><strong>Description:</strong> <%- item.description %> </p>
+        <p><strong>Category:</strong>  <a href="<%- item.category.url %> "><%- item.category.name %></a> </p>
+        <p><strong>Price:</strong> $ <%- item.price %> </p>
+        <p><strong>Number in Stock:</strong> <%- item.number_in_stock %> </p>
+      </div>
+      <!-- Button trigger modal -->
       
-      <h1><%- title %></h1>
+        <button type="button" class="btn btn-outline-danger">
+          <a href="<%- item.url %>/delete">Delete Item</a>
+        </button>
+    
+     
       
-       <p><strong>Description:</strong> <%- item.description %> </p>
-       <p><strong>Category:</strong>  <a href="<%- item.category.url %> "><%- item.category.name %></a> </p>
-       <p><strong>Price:</strong> $ <%- item.price %> </p>
-       <p><strong>Number in Stock:</strong> <%- item.number_in_stock %> </p>
-
     </div> 
     
    

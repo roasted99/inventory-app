@@ -9,8 +9,13 @@
   <body>
    <%- include('partials/navbar') %>
     <div class="container-fluid p-4">
-      
-      <h1><%- title %></h1>
+      <div class="row mb-4">
+        <h1 class="col-xl-10"><%- title %></h1>
+
+        <button class="btn btn-outline-dark col justify-content-end">  
+          <a href="<%- category.url + '/delete' %> " class="text-decoration-none">Create new category</a>
+        </button>
+    </div>
       <h2>"<%- category.name %>" </h2>
       <div class="d-flex flex-wrap gap-4">
         <% category_items.forEach(item => { %>

@@ -12,7 +12,8 @@
       <div class="row">
       <div class="justify-content-center">
       <h1><%- title %></h1>
-      <form action="" method="post" class="form-horizontal">
+      
+      <form action="/item/create" method="POST" class="form-horizontal">
         <div class="form-group">
           <label for="name" class="col-sm-2">Name:</label>
           <div class="col-sm-8">
@@ -30,7 +31,7 @@
         <div class="form-group">
           <label for="description" class="col-sm-2">Description:</label>
           <div class="col-sm-8">
-            <textarea name="description" class="form-control" id="description" placeholder="Description of the material" required="true" value="<%- undefined === item ? '' : item.description %> " ></textarea>
+            <textarea name="description" class="form-control" id="description" placeholder="Description of the material" required="true" value="<%- undefined === item ? '' : item.description %>" ></textarea>
           </div>
           </div>
 
@@ -53,14 +54,14 @@
         <div class="form-group">
           <label for="price" class="col-sm-2">Price:</label>
           <div class="col-sm-8">
-          <input type="number" class="form-control" name="price" id="price" placeholder="Price in USD" required="true" value="<%- undefined === item ? '' : item.price %> " >
+          <input type="number" class="form-control" name="price" id="price" placeholder="Price in USD" required="true" value="<%- undefined === item ? '' : item.price %>" >
           </div>
         </div>
 
         <div class="form-group">
           <label for="number_in_stock" class="col-sm-2">Number in stock:</label>
           <div class="col-sm-8">
-          <input type="number" class="form-control" name="number_in_stock" id="number_in_stock" placeholder="Number in stock" required="'true" value="<%- undefined === item ? '' : item.number_in_stock %> " >
+          <input type="number" class="form-control" name="number_in_stock" id="number_in_stock" placeholder="Number in stock" required="'true" value="<%- undefined === item ? '' : item.number_in_stock %>" >
         </div>
         </div>
         <br>

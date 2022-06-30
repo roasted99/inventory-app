@@ -1,6 +1,7 @@
 var express = require('express');
 var multer = require('multer');
 var router = express.Router();
+const path = require('path');
 
 var item_controller = require('../controllers/itemController');
 var category_controller = require('../controllers/categoryController');
@@ -15,7 +16,7 @@ var storage = multer.diskStorage({
   }
 });
 
-var imgFilter = function(req, file, cb) {
+var imgFilter = function(file, cb) {
   var ext = path.extname(file.originalname);
   if (ext !== '.png' && ext !== '.jpg' && ext !=='.jpeg') {
     return cb(new Error('Upload in .jpg, .png or jpeg file'));
@@ -23,14 +24,17 @@ var imgFilter = function(req, file, cb) {
   cb(null, true);
 }
 
-const upload = multer({ storage: storage, fileFilter: imgFilter });
+const upload = multer({ storage: storage, 
+                        fileFilter: function(req, file, cb) {
+                         imgFilter(file, cb);
+                        },limits:{fileSize: 10000000} });
 
 /* GET home page. */
 router.get('/', item_controller.index);
 
 router.get('/item/create', item_controller.item_create_get);
 
-router.post('/item/create',upload.single('item_pic'), item_controller.item_create_post);
+router.post('/item/create', upload.single('item_img'), item_controller.item_create_post);
 
 router.get('/item/:id/delete', item_controller.item_delete_get);
 
@@ -38,7 +42,7 @@ router.post('/item/:id/delete', item_controller.item_delete_post);
 
 router.get('/item/:id/update', item_controller.item_update_get);
 
-router.post('/item/:id/update',upload.single('item_pic'), item_controller.item_update_post);
+router.post('/item/:id/update', upload.single('item_img'), item_controller.item_update_post);
 
 router.get('/item/:id', item_controller.item_detail);
 
