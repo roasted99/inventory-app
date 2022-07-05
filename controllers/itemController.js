@@ -51,8 +51,7 @@ exports.item_create_get = function(req, res, next) {
 };
 
 // Handle item create on POST.
-exports.item_create_post = 
-[
+exports.item_create_post = [
     body('name', 'Name must not be empty.').trim().isLength({ min: 1 }).escape(),
     body('description', 'Description must not be empty.').trim().isLength({ min: 1 }).escape(),
     body('category', 'Category must not be empty.').trim().isLength({min: 1}).escape(),
@@ -124,11 +123,67 @@ exports.item_delete_post = function(req, res, next) {
 };
 
 // Display item update form on GET.
-exports.item_update_get = function(req, res) {
-    res.send('NOT IMPLEMENTED: item update GET');
+exports.item_update_get = function(req, res, next) {
+    async.parallel({
+        item: function(callback) {
+            Item.findById(req.params.id).populate('category').exec(callback);
+        },
+        categories: function(callback) {
+            Category.find(callback);
+        }
+    }, function(err, results) {
+        if (err) { return next(err); }
+        if (results.item == null) {
+            let err = new Error('Item not found')
+            err.status = 404;
+            return next(err);
+        }
+        res.render('item_form', { title: 'Update Item', categories: results.categories, item: results.item, errors: null})
+    })
 };
 
 // Handle item update on POST.
-exports.item_update_post = function(req, res) {
-    res.send('NOT IMPLEMENTED: item update POST');
-};
+exports.item_update_post = [
+    body('name', 'Name must not be empty.').trim().isLength({ min: 1 }).escape(),
+    body('description', 'Description must not be empty.').trim().isLength({ min: 1 }).escape(),
+    body('category', 'Category must not be empty.').trim().isLength({min: 1}).escape(),
+    body('price', 'Price must not be empty.').trim().isLength({ min: 1 }).escape(),
+    body('number_in_stock', 'Number in stock must not be empty.').trim().isLength({ min: 1 }).escape(),
+    (req, res, next) => {
+        console.log(req.body.name)
+        const errors = validationResult(req);
+
+        const item = new Item({
+            name: req.body.name,
+            description: req.body.description,
+            category: req.body.category,
+            price: req.body.price,
+            number_in_stock: req.body.number_in_stock,
+            _id: req.params.id
+        });
+
+        if (req.file && errors.isEmpty()) {
+            item.item_img = req.file.item_img;
+            fs.unlink(`public/uploads/${req.body.item_img}`, err => {
+                if(err) console.log(err)
+                console.log(req.body.item_img, "was deleted");
+            });
+        } else if (req.body.item_img && req.body.item_img !== 'null' && req.body.item_img !== 'underfined') {
+            item.item_img = req.body.item_img;
+        }
+
+        if (!errors.isEmpty()) {
+            Category.find({}).exec(function(err, categories) {
+                if (err) { console.log(err); return next(err); }
+                res.render('item_form', { title: 'Update Item', categories: categories, item: item, errors: errors.array() });
+                return;
+            });
+        }
+        else {
+            item.save(function(err) {
+                if(err) { return next(err); }
+                res.redirect(item.url);
+            });
+        }
+    }
+];
