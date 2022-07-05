@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <%- include('partials/head') %> 
+  <body>
+   <%- include('partials/navbar') %>
+    <div class="container-fluid p-4">
+      <div class="content">
+        <h1><%- title %>: <%- category.name %> </h1>
+        <% if (category_items.length) { %>
+          <p><strong>Delete the following items before attempting to delete this category.</strong></p>
+          <div>
+            <h4>Items</h4>
+            <ul>
+              <% category_items.forEach(item => { %>
+                <li><a href="<%- item.url %> "><%- item.name %> </a></li>
+              <% }) %> 
+            </ul>
+          </div>
+        <% } else { %> 
+          <p>Do you really want to delete this category?</p>
+          <form action="" method="post">
+            <div class="form-group">
+              <input type="hidden" name="categoryid" value="<%- category._id %>" required="true">
+            </div>
+            <button type="submit" class="btn btn-outline-danger">Delete</button>
+          </form>
+        <% } %> 
+     
+    
+    </div> 
+    
+   
+  </body>
+</html>
