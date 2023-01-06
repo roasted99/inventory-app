@@ -1,4 +1,8 @@
 # inventory-app
-This is an building materials inventory apps using express. 
+This is an building materials inventory apps using express, mongodb. 
 
-You could view the live version here https://rugged-mesa-verde-65393.herokuapp.com/. 
+Run 
+`npm run serverstart`
+for dev environment
+
+You could view the live version here. 
