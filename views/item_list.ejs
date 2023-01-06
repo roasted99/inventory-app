@@ -20,9 +20,9 @@
       <% item_list.forEach(item => { %>
         <div class="card">
           <% if (item.item_img) { %>
-            <img src="/public/uploads/<%= item.item_img %>" alt="<%- item.name %>" class="card-img-top img-fluid">
+            <img src="../public/uploads/<%= item.item_img %>" alt="<%- item.name %>" class="card-img-top img-fluid">
          <%  } else { %> 
-            <img src="/public/images/noimage.jpg" alt="Image not found" class="card-img-top img-fluid">
+            <img src="/images/noimage.jpg" alt="Image not found" class="card-img-top img-fluid">
           <% } %> 
         <div class="card-body">
           <h5 class="card-title">

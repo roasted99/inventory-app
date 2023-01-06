@@ -11,3 +11,8 @@ body {
 .card-title:hover {
   text-decoration: underline;
 }
+
+.btn {
+  text-decoration: none;
+  color: black;
+}
