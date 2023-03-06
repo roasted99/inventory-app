@@ -8,7 +8,8 @@
   "scripts": {
     "start": "node ./bin/www",
     "devstart": "nodemon ./bin/www",
-    "serverstart": "DEBUG=inventory-app:* npm run devstart"
+    "serverstart": "DEBUG=inventory-app:* npm run devstart",
+    "build": "NODE_ENV=production ./node_modules/.bin/netlify-lambda build src"
   },
   "dependencies": {
     "async": "^3.2.4",
